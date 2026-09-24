@@ -1,0 +1,36 @@
+/* The home screen is one centered mobile canvas with a full-height photo. */
+.page:has(.workout-list) {
+  width: 100%;
+  max-width: 430px;
+  min-height: 100dvh;
+  margin: 0 auto;
+  padding: 0 16px calc(82px + env(safe-area-inset-bottom));
+  position: relative;
+  isolation: isolate;
+  background-color: #07090a;
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, .30) 0%, rgba(0, 0, 0, .38) 25%, rgba(0, 0, 0, .68) 55%, rgba(0, 0, 0, .92) 78%, #07090a 100%), url('/img/bg%20main.png');
+  background-repeat: no-repeat;
+  background-position: center top;
+  background-size: cover;
+}
+
+.page:has(.workout-list) .page-header {
+  height: 183px;
+  margin: 0 -16px 5px;
+  padding: calc(91px + env(safe-area-inset-top)) 20px 0;
+  background: none;
+}
+
+.page:has(.workout-list) .workout-list {
+  padding: 0;
+}
+
+.page:has(.workout-list) ~ .bottom-nav {
+  width: min(100%, 430px);
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+@media (min-width: 431px) {
+  body { background: #030405; }
+}

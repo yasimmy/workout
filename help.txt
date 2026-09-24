@@ -1,0 +1,227 @@
+DEPLOY WORKOUT APP TO VERCEL
+============================
+
+Этот проект уже является готовым Vite + React + TypeScript приложением.
+Backend для приложения не нужен: пользовательские тренировки, настройки и история хранятся локально в IndexedDB браузера.
+
+ВАЖНО ПРО ДАННЫЕ
+----------------
+Vercel публикует только статические файлы приложения. Он не хранит пользовательские тренировки.
+Каждый браузер и каждое устройство имеют собственное локальное IndexedDB-хранилище.
+Если пользователь очистит данные сайта или storage браузера, локальная история может быть потеряна.
+Для резервной копии используйте Settings -> Export data.
+
+
+ВАРИАНТ 1. ДЕПЛОЙ ЧЕРЕЗ GITHUB
+--------------------------------
+
+1. Установите Git, если он еще не установлен:
+   https://git-scm.com/downloads
+
+2. Откройте PowerShell в папке проекта:
+   C:\Users\dotnet\Desktop\ws
+
+3. Проверьте, что проект собирается локально:
+
+   npm install
+   npm run build
+
+   После успешной сборки должна появиться папка dist.
+
+4. Создайте новый пустой repository на GitHub.
+   Например: workout-fitness-app
+   Не добавляйте README, .gitignore и license, если они уже есть в этом проекте.
+
+5. В PowerShell выполните команды из корня проекта:
+
+   git init
+   git add .
+   git commit -m "Initial fitness app"
+   git branch -M main
+   git remote add origin https://github.com/YOUR_LOGIN/YOUR_REPOSITORY.git
+   git push -u origin main
+
+   Замените YOUR_LOGIN и YOUR_REPOSITORY на свои значения.
+
+6. Откройте:
+   https://vercel.com/
+
+7. Нажмите Add New -> Project.
+
+8. Подключите GitHub и выберите repository workout-fitness-app.
+
+9. В настройках проекта проверьте:
+
+   Framework Preset: Vite
+   Root Directory: ./
+   Build Command: npm run build
+   Output Directory: dist
+   Install Command: npm install
+
+10. Нажмите Deploy.
+
+11. После завершения Vercel покажет адрес вида:
+
+   https://workout-fitness-app.vercel.app
+
+Этот адрес можно открыть на телефоне. Для установки как PWA откройте его в поддерживаемом браузере и используйте команду установки приложения.
+
+
+ВАРИАНТ 2. ДЕПЛОЙ ЧЕРЕЗ VERCEL CLI
+-----------------------------------
+
+1. Установите Vercel CLI:
+
+   npm install -g vercel
+
+2. Перейдите в корень проекта:
+
+   cd C:\Users\dotnet\Desktop\ws
+
+3. Выполните вход:
+
+   vercel login
+
+   Выберите удобный способ входа и завершите авторизацию в браузере.
+
+4. Запустите первый deploy:
+
+   vercel
+
+5. На вопросы CLI отвечайте так:
+
+   Set up and deploy? Yes
+   Which scope? Ваш аккаунт Vercel
+   Link to existing project? No, если проекта еще нет
+   Project name? workout-fitness-app
+   In which directory is your code located? ./
+   Want to modify these settings? No
+
+6. Для production deploy выполните:
+
+   vercel --prod
+
+После этого CLI выведет production URL.
+
+
+ПОЧЕМУ НУЖЕН vercel.json
+-------------------------
+
+Приложение использует BrowserRouter и имеет адреса:
+
+   /
+   /workout/A
+   /workout/B
+   /workout/C
+   /active/A
+   /active/B
+   /active/C
+   /progress
+   /settings
+
+При прямом открытии вложенного адреса хостинг должен отдавать index.html, а не 404.
+В проект уже добавлен vercel.json с rewrite для SPA-маршрутов.
+Не удаляйте его после загрузки проекта на GitHub.
+
+
+ПРОВЕРКА ПОСЛЕ DEPLOY
+----------------------
+
+1. Откройте production URL.
+2. Откройте Workout A.
+3. Нажмите Начать тренировку.
+4. Введите вес и повторы первого подхода.
+5. Завершите подход и убедитесь, что появился rest timer.
+6. Перезагрузите страницу /active/A.
+7. Убедитесь, что вес, повторы и rest timer восстановились.
+8. Откройте Settings.
+9. Проверьте Export data.
+10. Откройте Progress и убедитесь, что completed sessions отображаются.
+11. Проверьте адреса /workout/A и /active/A напрямую в новой вкладке.
+
+
+PWA И OFFLINE
+-------------
+
+Service worker регистрируется только при открытии сайта через http/https.
+Он не будет полноценно работать при открытии index.html через file://.
+
+После первого открытия production сайта:
+
+- браузер загрузит service worker;
+- shell приложения сможет кэшироваться;
+- IndexedDB продолжит работать локально;
+- active workout и timers смогут восстанавливаться после reload;
+- YouTube technique video может быть недоступно без сети.
+
+При изменении service worker иногда нужно:
+
+1. Открыть DevTools.
+2. Перейти в Application -> Service Workers.
+3. Нажать Update или Unregister.
+4. Перезагрузить страницу.
+
+
+CUSTOM DOMAIN
+-------------
+
+1. В Vercel откройте проект.
+2. Откройте Settings -> Domains.
+3. Нажмите Add Domain.
+4. Введите свой домен.
+5. Добавьте DNS-записи, которые покажет Vercel.
+6. Дождитесь проверки DNS.
+
+После подключения домена IndexedDB все равно остается привязанной к origin.
+Данные на workout-fitness-app.vercel.app и данные на собственном домене будут разными.
+
+
+ОБНОВЛЕНИЕ САЙТА
+-----------------
+
+Если проект подключен к GitHub:
+
+   git add .
+   git commit -m "Update workout app"
+   git push
+
+Vercel автоматически запустит новый build и обновит deployment.
+
+Если используется CLI:
+
+   vercel --prod
+
+
+ТИПИЧНЫЕ ПРОБЛЕМЫ
+------------------
+
+1. Build failed
+   Проверьте локально:
+
+   npm install
+   npm run build
+
+   Исправьте первую ошибку TypeScript, затем повторите deploy.
+
+2. Страница /active/A дает 404 при прямом открытии
+   Проверьте, что vercel.json находится в корне проекта рядом с package.json и был отправлен в Git.
+
+3. Не появляется PWA install
+   Откройте сайт через https, а не через localhost или file://.
+   Убедитесь, что manifest.webmanifest и service worker загружаются без ошибок.
+
+4. Пропала локальная история
+   Проверьте, что открыт тот же домен и тот же браузер.
+   IndexedDB не синхронизируется между устройствами.
+   Восстановите данные через Settings -> Import data из JSON backup.
+
+5. YouTube не показывает видео offline
+   Это ожидаемо. Текст техники и инструкции хранятся локально, само внешнее YouTube-видео требует интернет.
+
+
+БЕЗОПАСНАЯ СХЕМА ПУБЛИКАЦИИ
+----------------------------
+
+Не добавляйте в проект API keys, пароли, токены или приватные данные пользователя.
+Не добавляйте backend только ради сохранения тренировок: текущая архитектура специально работает через IndexedDB в браузере.
+В Git должны попадать исходники приложения и статические assets, но не секреты и не личные backup-файлы.

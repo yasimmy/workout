@@ -1,0 +1,9 @@
+body:has(.workout-list), body:has(.workout-list) #root {
+  width: 100vw;
+  min-width: 100%;
+  overflow-x: hidden;
+}
+
+body:has(.workout-list) .page:has(.workout-list) {
+  margin-inline: auto;
+}

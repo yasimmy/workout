@@ -1,0 +1,120 @@
+/* Final home-only pixel alignment for the 390 x 844 reference. */
+.page:has(.workout-list) {
+  width: 100%;
+  max-width: 430px;
+  min-height: 100dvh;
+  margin: 0 auto;
+  padding: 0 16px calc(88px + env(safe-area-inset-bottom));
+  overflow: hidden;
+  background-color: #070809;
+  background-image: linear-gradient(to bottom, rgba(0,0,0,.18) 0%, rgba(0,0,0,.28) 18%, rgba(0,0,0,.50) 38%, rgba(0,0,0,.76) 58%, rgba(0,0,0,.94) 78%, #070809 100%), url('/img/bg%20main.png');
+  background-repeat: no-repeat;
+  background-position: center 15%;
+  background-size: cover;
+}
+
+.page:has(.workout-list) .page-header {
+  height: 282px;
+  margin: 0 -16px;
+  padding: clamp(120px, 17.5dvh, 155px) 20px 0;
+  background: none;
+}
+
+.page:has(.workout-list) .page-header h1 {
+  margin: 0 0 4px;
+  font-size: 27px;
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -.6px;
+}
+
+.page:has(.workout-list) .page-header p {
+  width: 150px;
+  max-width: 150px;
+  margin: 0;
+  color: rgba(255,255,255,.92);
+  font-size: 14px;
+  line-height: 1.08;
+}
+
+.page:has(.workout-list) .workout-list {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  padding: 0;
+}
+
+.page:has(.workout-list) .workout-card {
+  width: 100%;
+  min-height: 64px;
+  height: 64px;
+  padding: 0 14px;
+  border: 1px solid rgba(255,255,255,.11);
+  border-radius: 15px;
+  background: rgba(29,31,33,.94);
+}
+
+.page:has(.workout-list) .workout-card:before,
+.page:has(.workout-list) .card-index,
+.page:has(.workout-list) .card-main small {
+  display: none;
+}
+
+.page:has(.workout-list) .card-main {
+  gap: 3px;
+}
+
+.page:has(.workout-list) .card-main strong {
+  font-size: 14px;
+  line-height: 1.15;
+}
+
+.page:has(.workout-list) .card-main span {
+  color: rgba(255,255,255,.52);
+  font-size: 10.5px;
+  line-height: 1.2;
+}
+
+.page:has(.workout-list) .card-arrow {
+  width: 19px;
+  height: 19px;
+  color: rgba(255,255,255,.95);
+  stroke-width: 2.2;
+}
+
+.page:has(.workout-list) ~ .bottom-nav {
+  left: 50%;
+  bottom: max(8px, env(safe-area-inset-bottom));
+  width: calc(100% - 16px);
+  max-width: 414px;
+  height: 72px;
+  padding: 7px 4px;
+  border: 1px solid rgba(255,255,255,.09);
+  border-radius: 26px;
+  background: rgba(14,16,18,.94);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.page:has(.workout-list) ~ .bottom-nav .nav-item {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  justify-content: center;
+  gap: 4px;
+  color: rgba(255,255,255,.42);
+  font-size: 9px;
+}
+
+.page:has(.workout-list) ~ .bottom-nav .nav-item.active {
+  color: #2f8cff;
+}
+
+.page:has(.workout-list) ~ .bottom-nav .nav-item svg {
+  width: 21px;
+  height: 21px;
+}
+
+@media (min-width: 431px) {
+  body { background: #030405; }
+}
